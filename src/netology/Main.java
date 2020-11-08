@@ -15,31 +15,12 @@ public class Main {
         GameProgress save3 = new GameProgress(30, 10, 10, 22.2);
 
         // Сохранить сериализованные объекты GameProgress в папку savegames из предыдущей задачи.
-
-        try (FileOutputStream fos = new FileOutputStream(pathToSave + "\\save1.dat");
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(save1);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        try (FileOutputStream fos = new FileOutputStream(pathToSave + "\\save2.dat");
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(save2);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        try (FileOutputStream fos = new FileOutputStream(pathToSave + "\\save3.dat");
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(save3);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        serialisation(pathToSave, save1, "\\save1.dat");
+        serialisation(pathToSave, save2, "\\save2.dat");
+        serialisation(pathToSave, save3, "\\save3.dat");
 
 //        Созданные файлы сохранений из папки savegames запаковать в архив zip.
-
-        try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(pathToSave + "\\saves.zip"))){
+       try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(pathToSave + "\\saves.zip"))){
 
             ZipEntry entry1 = new ZipEntry(pathToSave + "\\save1.dat");
             zout.putNextEntry(entry1);
@@ -63,7 +44,15 @@ public class Main {
                 file.delete();
             }
         }
+    }
 
+    private static void serialisation(String pathToSave, GameProgress save, String s) {
+        try (FileOutputStream fos = new FileOutputStream(pathToSave + s);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(save);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
 
